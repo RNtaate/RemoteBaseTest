@@ -1,13 +1,16 @@
 import React from 'react'
 
 function Movieslist({ actualMovieList }) {
+  let finalMovieList = actualMovieList.sort(function(a, b) {
+    return parseFloat(b.duration) - parseFloat(a.duration);
+  } )
   return (
     <section>
       <ul 
         className='styled w-100 pl-0' 
         data-testid='moviesList'
       >
-      { actualMovieList.map((movie, index) => {
+      { finalMovieList.map((movie, index) => {
 
       return (<li 
         className='flex slide-up-fade-in justify-content-between'
