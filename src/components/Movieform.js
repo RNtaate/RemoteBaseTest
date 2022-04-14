@@ -1,17 +1,58 @@
-import React, {useState} from 'react'
+import { toBeRequired } from '@testing-library/jest-dom/dist/matchers';
+import React, {useState, useRef} from 'react'
 
 function Movieform() {
 
-  const [err, setErr] = useState(true);
+  const [err, setErr] = useState('');
+  const movieNameRef = useRef();
+  const ratingRef = useRef();
+  let currentMovieTime = ""
 
   function resetErr() {
-    setErr(false);
+    setErr('');
+  }
+
+  function validateName() {
+    const movieRegex = /^\w{2,}$/
+    if(movieNameRef.current.value.trim().match(movieRegex)) {
+      return true;
+    }
+    return false;
+  }
+
+  function validateDuration() {
+    const durationRegexMins = /^[0-9]+[m]{1}$/
+    const durationRegexHours = /^[0-9]+[.]{0,1}[0-9]{0,1}[h]$/
+    if(ratingRef.current.value.trim().match(durationRegexMins) || ratingRef.current.value.trim().match(durationRegexHours)) {
+      if(ratingRef.current.value.toString().split("").includes('m')){
+        currentMovieTime = ratingRef.current.value.split("m");
+        currentMovieTime = currentMovieTime[0];
+        currentMovieTime = (currentMovieTime / 60)
+        currentMovieTime = currentMovieTime.toFixed(1) + 'h';
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function overallValidation () {
+    if(!validateName()) {
+      setErr('Please Enter a valide name with 2 or more characters');
+      return;
+    }
+    if(!validateDuration()) {
+      setErr('Please specify time in hours or minutes (e.g. 2.5h or 150m)');
+      return;
+    }
   }
 
   return (
     <section>
       <div className='card pa-30'>
-        <form onSubmit={ e => e.preventDefault() }>
+        <form onSubmit={ e => {
+          e.preventDefault()
+          overallValidation();
+          } }>
           <div className='layout-column mb-15'>
             <label htmlFor='name' className='mb-3'>Movie Name</label>
             <input 
@@ -20,6 +61,7 @@ function Movieform() {
               placeholder='Enter Movie Name'
               data-testid='nameInput'
               onInput={resetErr}
+              ref={movieNameRef}
             />
           </div>
           <div className='layout-column mb-15'>
@@ -30,6 +72,8 @@ function Movieform() {
               placeholder='Enter Rating on a scale of 1 to 100'
               data-testid='ratingsInput'
               onInput={resetErr}
+              max="100"
+              min="0"
             />
           </div>
           <div className='layout-column mb-30'>
@@ -40,6 +84,7 @@ function Movieform() {
               placeholder='Enter duration in hours or minutes'
               data-testid='durationInput'
               onInput={resetErr}
+              ref={ratingRef}
             />
           </div>
           {/* Use this div when time format is invalid */}
@@ -47,7 +92,8 @@ function Movieform() {
             className='alert error mb-30'
             data-testid='alert'
           >
-            Please specify time in hours or minutes (e.g. 2.5h or 150m)
+            {err}
+            {/* Please specify time in hours or minutes (e.g. 2.5h or 150m) */}
           </div>} 
           <div className='layout-row justify-content-end'>
             <button 
