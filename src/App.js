@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import 'h8k-components'
 
@@ -7,7 +7,8 @@ import { Movieform, Movieslist, Search } from './components'
 const title = 'Favorite Movie Directory'
 
 function App() {
-
+  const [actualMovieList, setActualMovieList] = useState([]);
+  const [err, setErr] = useState('');
   return (
     <div>
       <h8k-navbar header={ title } />
