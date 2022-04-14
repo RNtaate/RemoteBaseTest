@@ -1,6 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 function Movieform() {
+
+  const [err, setErr] = useState(true);
+
+  function resetErr() {
+    setErr(false);
+  }
 
   return (
     <section>
@@ -13,6 +19,7 @@ function Movieform() {
               id='name'
               placeholder='Enter Movie Name'
               data-testid='nameInput'
+              onInput={resetErr}
             />
           </div>
           <div className='layout-column mb-15'>
@@ -22,6 +29,7 @@ function Movieform() {
               id='ratings'
               placeholder='Enter Rating on a scale of 1 to 100'
               data-testid='ratingsInput'
+              onInput={resetErr}
             />
           </div>
           <div className='layout-column mb-30'>
@@ -31,15 +39,16 @@ function Movieform() {
               id='duration'
               placeholder='Enter duration in hours or minutes'
               data-testid='durationInput'
+              onInput={resetErr}
             />
           </div>
           {/* Use this div when time format is invalid */}
-          {/* <div 
+          {err && <div 
             className='alert error mb-30'
             data-testid='alert'
           >
             Please specify time in hours or minutes (e.g. 2.5h or 150m)
-          </div>  */}
+          </div>} 
           <div className='layout-row justify-content-end'>
             <button 
               type='submit'
