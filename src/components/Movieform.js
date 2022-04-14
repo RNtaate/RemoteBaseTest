@@ -1,11 +1,12 @@
 import { toBeRequired } from '@testing-library/jest-dom/dist/matchers';
 import React, {useState, useRef} from 'react'
 
-function Movieform() {
+function Movieform({ setActualMovieList, actualMovieList }) {
 
   const [err, setErr] = useState('');
   const movieNameRef = useRef();
   const ratingRef = useRef();
+  const durationRef = useRef();
   let currentMovieTime = ""
 
   function resetErr() {
@@ -13,7 +14,7 @@ function Movieform() {
   }
 
   function validateName() {
-    const movieRegex = /^\w{2,}$/
+    const movieRegex = /^[\w\W]{2,}$/
     if(movieNameRef.current.value.trim().match(movieRegex)) {
       return true;
     }
@@ -23,12 +24,12 @@ function Movieform() {
   function validateDuration() {
     const durationRegexMins = /^[0-9]+[m]{1}$/
     const durationRegexHours = /^[0-9]+[.]{0,1}[0-9]{0,1}[h]$/
-    if(ratingRef.current.value.trim().match(durationRegexMins) || ratingRef.current.value.trim().match(durationRegexHours)) {
-      if(ratingRef.current.value.toString().split("").includes('m')){
-        currentMovieTime = ratingRef.current.value.split("m");
+    if(durationRef.current.value.trim().match(durationRegexMins) || durationRef.current.value.trim().match(durationRegexHours)) {
+      if(durationRef.current.value.toString().split("").includes('m')){
+        currentMovieTime = durationRef.current.value.split("m");
         currentMovieTime = currentMovieTime[0];
         currentMovieTime = (currentMovieTime / 60)
-        currentMovieTime = currentMovieTime.toFixed(1) + 'h';
+        currentMovieTime = parseFloat(currentMovieTime.toFixed(1));
       }
       return true;
     }
@@ -44,6 +45,14 @@ function Movieform() {
       setErr('Please specify time in hours or minutes (e.g. 2.5h or 150m)');
       return;
     }
+
+    let enteredMovie = {
+      moviename: movieNameRef.current.value,
+      rating: parseInt(ratingRef.current.value),
+      duration: currentMovieTime + "HRS"
+    }
+
+    setActualMovieList([...actualMovieList, enteredMovie])
   }
 
   return (
@@ -52,6 +61,7 @@ function Movieform() {
         <form onSubmit={ e => {
           e.preventDefault()
           overallValidation();
+          e.target.reset();
           } }>
           <div className='layout-column mb-15'>
             <label htmlFor='name' className='mb-3'>Movie Name</label>
@@ -74,6 +84,7 @@ function Movieform() {
               onInput={resetErr}
               max="100"
               min="0"
+              ref={ratingRef}
             />
           </div>
           <div className='layout-column mb-30'>
@@ -84,7 +95,7 @@ function Movieform() {
               placeholder='Enter duration in hours or minutes'
               data-testid='durationInput'
               onInput={resetErr}
-              ref={ratingRef}
+              ref={durationRef}
             />
           </div>
           {/* Use this div when time format is invalid */}
