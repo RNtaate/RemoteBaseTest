@@ -9,6 +9,7 @@ const title = 'Favorite Movie Directory'
 function App() {
   const [actualMovieList, setActualMovieList] = useState([]);
   const [actualSearchList, setActualSearchList] = useState([]);
+  const [filter, setFilter] = useState('');
   
   return (
     <div>
@@ -21,11 +22,12 @@ function App() {
           <Search />
           {actualMovieList.length != 0 && 
           <>
-            <Movieslist actualMovieList={actualMovieList}/> :
+            <Movieslist actualMovieList={actualMovieList}/>
             <div data-testid='noResult'>
               <h3 className='text-center'>No Results Found</h3>
             </div>
-          </>}
+          </>
+          }
         </div>
       </div> 
     </div>
