@@ -1,7 +1,9 @@
 import React from 'react'
 
-function Movieslist({ actualMovieList }) {
-  let finalMovieList = actualMovieList.sort(function(a, b) {
+function Movieslist({ actualMovieList, actualSearchList }) {
+  let finalMovieList = actualMovieList;
+  if(actualSearchList.length > 0) finalMovieList = actualSearchList;
+  finalMovieList = finalMovieList.sort(function(a, b) {
     return parseFloat(b.duration) - parseFloat(a.duration);
   } )
   return (
