@@ -23,7 +23,7 @@ function Search({ setActualSearchList, actualMovieList, setSearchFocus }) {
         className='w-75 py-2'
         data-testid='search'
         ref = {searchRef}
-        onInput={updateSearchList}
+        onChange={updateSearchList}
         onBlur={() => {
           setSearchFocus(false);
         }}
