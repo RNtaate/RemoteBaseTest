@@ -7,7 +7,7 @@ function Search({ setActualSearchList, actualMovieList, setSearchFocus }) {
   function updateSearchList() {
     if (searchRef.current.value.length >= 2) {
       setSearchFocus(true);
-      let newArray = actualMovieList.filter(movie => movie.moviename.toLowerCase().includes(searchRef.current.value.toString().toLowerCase()));
+      let newArray = actualMovieList.filter(movie => movie.moviename.toLowerCase().startsWith(searchRef.current.value.toString().toLowerCase()));
       setActualSearchList(newArray);
     }else {
       setSearchFocus(false);
