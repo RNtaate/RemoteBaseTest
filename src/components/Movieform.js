@@ -31,6 +31,11 @@ function Movieform({ setActualMovieList, actualMovieList }) {
         currentMovieTime = (currentMovieTime / 60)
         currentMovieTime = parseFloat(currentMovieTime.toFixed(1));
       }
+      else if(durationRef.current.value.toString().split("").includes('h')) {
+        currentMovieTime = durationRef.current.value.split("h");
+        currentMovieTime = currentMovieTime[0];
+        currentMovieTime = parseFloat((currentMovieTime * 1.0).toFixed(1));
+      }
       return true;
     }
     return false;
@@ -48,8 +53,8 @@ function Movieform({ setActualMovieList, actualMovieList }) {
 
     let enteredMovie = {
       moviename: movieNameRef.current.value,
-      rating: parseInt(ratingRef.current.value),
-      duration: currentMovieTime + "HRS"
+      rating: `Ratings: ${parseInt(ratingRef.current.value)}`,
+      duration: currentMovieTime + " Hrs"
     }
 
     setActualMovieList([...actualMovieList, enteredMovie])
