@@ -9,7 +9,7 @@ const title = 'Favorite Movie Directory'
 function App() {
   const [actualMovieList, setActualMovieList] = useState([]);
   const [actualSearchList, setActualSearchList] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [searchFocus, setSearchFocus] = useState(false);
   
   return (
     <div>
@@ -19,13 +19,14 @@ function App() {
           <Movieform setActualMovieList={setActualMovieList} actualMovieList={actualMovieList}/>
         </div>
         <div className='layout-column w-30'>
-          <Search />
+          <Search actualMovieList={actualMovieList} setActualSearchList={setActualSearchList} setSearchFocus={setSearchFocus}/>
           {actualMovieList.length != 0 && 
           <>
-            <Movieslist actualMovieList={actualMovieList}/>
+            {(searchFocus && actualSearchList.length == 0) ?
             <div data-testid='noResult'>
               <h3 className='text-center'>No Results Found</h3>
-            </div>
+            </div> : 
+            <Movieslist actualMovieList={actualMovieList} actualSearchList={actualSearchList}/>}
           </>
           }
         </div>
