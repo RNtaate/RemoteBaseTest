@@ -41,6 +41,13 @@ function Movieform({ setActualMovieList, actualMovieList }) {
     return false;
   }
 
+  function validateRating() {
+    if(ratingRef.current.value){
+      return true;
+    }
+    return false;
+  }
+
   function overallValidation () {
     if(!validateName()) {
       setErr('Please Enter a valide name with 2 or more characters');
@@ -48,6 +55,11 @@ function Movieform({ setActualMovieList, actualMovieList }) {
     }
     if(!validateDuration()) {
       setErr('Please specify time in hours or minutes (e.g. 2.5h or 150m)');
+      return;
+    }
+
+    if(!validateRating()) {
+      setErr('Please fill in a rating between 0 and 100');
       return;
     }
 
