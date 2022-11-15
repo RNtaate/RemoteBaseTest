@@ -84,6 +84,7 @@ function Movieform({ setActualMovieList, actualMovieList }) {
               onInput={resetErr}
               max="100"
               min="0"
+              required
               ref={ratingRef}
             />
           </div>
